@@ -13,7 +13,7 @@ import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
 import { logger } from './utils/logger';
 import schoolRouter from './res/schools/school.router';
-import subjectRouter from './res/schools/subject.router';
+import subjectRouter from './res/subjects/subject.router';
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
 var privateKey = fs.readFileSync(`${__dirname}/sslcert/server.key`, 'utf8');
