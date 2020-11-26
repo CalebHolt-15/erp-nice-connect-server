@@ -12,6 +12,7 @@ import { protect, reAuth, signin, signup } from './utils/auth';
 import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
 import { logger } from './utils/logger';
+import courseRouter from './res/course/course.router';
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
 var privateKey = fs.readFileSync(`${__dirname}/sslcert/server.key`, 'utf8');
@@ -70,11 +71,12 @@ app.get('/', xsrfProtection, (req, res) => {
 });
 
 app.post('/signup', signup);
-app.post('/signin', xsrfProtection, signin);
+app.post('/signin', signin);
 app.use('/api', protect);
 app.use('/api', reAuth);
 app.use('/api/user', xsrfProtection, userRouter);
 app.use('/api/item', xsrfProtection, itemRouter);
+app.use('/api/course', courseRouter);
 
 export const start = async () => {
   try {
