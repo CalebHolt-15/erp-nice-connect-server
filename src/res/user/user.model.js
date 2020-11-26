@@ -3,8 +3,6 @@ import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: String,
-    lastName: String,
     email: {
       type: String,
       required: true,
@@ -12,6 +10,11 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     password: String,
+    role: String,
+    firstName: String,
+    lastName: String,
+    subjects: [{ type: mongoose.SchemaTypes.ObjectId }],
+    course: { type: mongoose.SchemaTypes.ObjectId },
   },
   { timestamps: true }
 );
