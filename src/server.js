@@ -14,6 +14,8 @@ import csrf from 'csurf';
 import { logger } from './utils/logger';
 import schoolRouter from './res/schools/school.router';
 import subjectRouter from './res/subjects/subject.router';
+import courseRouter from './res/course/course.router';
+import taskRouter from './res/task/task.router';
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
 var privateKey = fs.readFileSync(`${__dirname}/sslcert/server.key`, 'utf8');
@@ -79,6 +81,8 @@ app.use('/api/user', xsrfProtection, userRouter);
 app.use('/api/item', xsrfProtection, itemRouter);
 app.use('/api/school', schoolRouter);
 app.use('/api/subject', subjectRouter);
+app.use('/api/course', courseRouter);
+app.use('/api/task', taskRouter);
 
 export const start = async () => {
   try {
