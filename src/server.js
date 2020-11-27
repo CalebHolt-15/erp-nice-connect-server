@@ -17,6 +17,8 @@ import subjectRouter from './res/subjects/subject.router';
 import courseRouter from './res/course/course.router';
 import taskRouter from './res/task/task.router';
 import notificationRouter from './res/notifications/notification.router';
+import notificationRouter from './res/notification/notification.router';
+import submissionRouter from './res/submission/submission.router';
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
 var privateKey = fs.readFileSync(`${__dirname}/sslcert/server.key`, 'utf8');
@@ -85,6 +87,7 @@ app.use('/api/subject', subjectRouter);
 app.use('/api/course', courseRouter);
 app.use('/api/task', taskRouter);
 app.use('/api/notification', notificationRouter);
+app.use('/api/submission', submissionRouter);
 
 export const start = async () => {
   try {
