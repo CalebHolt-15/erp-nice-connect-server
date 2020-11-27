@@ -19,6 +19,7 @@ import taskRouter from './res/task/task.router';
 import notificationRouter from './res/notifications/notification.router';
 import submissionRouter from './res/submission/submission.router';
 import teacherRouter from './res/teacher/teacher.router';
+import studentRouter from './res/student/student.router';
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
 var privateKey = fs.readFileSync(`${__dirname}/sslcert/server.key`, 'utf8');
@@ -89,6 +90,7 @@ app.use('/api/task', taskRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/submission', submissionRouter);
 app.use('/api/teacher', teacherRouter);
+app.use('/api/student', studentRouter);
 
 export const start = async () => {
   try {
