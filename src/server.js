@@ -16,7 +16,7 @@ import schoolRouter from './res/schools/school.router';
 import subjectRouter from './res/subjects/subject.router';
 import courseRouter from './res/course/course.router';
 import taskRouter from './res/task/task.router';
-import notificationRouter from './res/notifications/notification.router';
+import notificationRouter from './res/notification/notification.router';
 import submissionRouter from './res/submission/submission.router';
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');

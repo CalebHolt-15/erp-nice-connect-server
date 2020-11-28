@@ -5,6 +5,7 @@ const router = Router();
 
 router.route('/').get(controllers.getAll).post(controllers.createOne);
 
+router;
 router
   .route('/:id')
   .get(controllers.getOne)
