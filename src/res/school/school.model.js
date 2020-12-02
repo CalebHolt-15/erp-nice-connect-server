@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const schoolSchema = new mongoose.Schema(
   {
@@ -9,11 +10,13 @@ const schoolSchema = new mongoose.Schema(
       landmark: String,
       city: String,
       state: String,
-      pincode: Number,
+      pincode: String,
     },
-    courses: [{ type: mongoose.SchemaTypes.ObjectId }],
+    courses: String,
   },
   { timestamps: true }
 );
+
+schoolSchema.plugin(mongoosePaginate);
 
 export const School = mongoose.model('school', schoolSchema);
