@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const courseSchema = new mongoose.Schema({
   name: String,
-  section: String,
   section: String,
   subjects: [
     {
@@ -19,5 +19,7 @@ const courseSchema = new mongoose.Schema({
     },
   ],
 });
+
+courseSchema.plugin(mongoosePaginate);
 
 export const Course = mongoose.model('course', courseSchema);
