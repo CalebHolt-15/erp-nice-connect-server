@@ -13,6 +13,11 @@ const schoolSchema = new mongoose.Schema(
       pincode: String,
     },
     courses: String,
+    createdBy: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'user',
+      required: true,
+    },
   },
   { timestamps: true }
 );
