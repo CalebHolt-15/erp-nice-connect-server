@@ -12,7 +12,18 @@ const schoolSchema = new mongoose.Schema(
       state: String,
       pincode: String,
     },
-    courses: String,
+    courses: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'course',
+        // required: true,
+      },
+    ],
+    createdBy: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'user',
+      required: true,
+    },
   },
   { timestamps: true }
 );
