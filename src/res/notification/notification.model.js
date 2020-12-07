@@ -5,12 +5,11 @@ const notificatonSchema = new mongoose.Schema(
   {
     title: String,
     text: String,
-    // user: {
-    //   type: mongoose.SchemaTypes.ObjectId,
-    //   ref: 'user',
-    //   //   required: true,
-    // },\
-    user: String,
+    user: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'user',
+      //   required: true,
+    },
   },
   { timestamps: true }
 );
