@@ -7,18 +7,16 @@ const courseSchema = new mongoose.Schema(
     section: String,
     subjects: [
       {
-        type: mongoose.SchemaTypes.ObjectId,
-        //   required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
         ref: 'subject',
       },
     ],
-    school: [
-      {
-        type: mongoose.SchemaTypes.ObjectId,
-        //   required: true,
-        ref: 'school',
-      },
-    ],
+    school: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'school',
+    },
   },
   { timestamps: true }
 );

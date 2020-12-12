@@ -14,15 +14,15 @@ const schoolSchema = new mongoose.Schema(
     },
     courses: [
       {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'course',
+        type: mongoose.Schema.Types.ObjectId,
         // required: true,
+        ref: 'course',
       },
     ],
     createdBy: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user',
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: 'user',
     },
   },
   { timestamps: true }
