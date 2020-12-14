@@ -98,52 +98,32 @@ const fileStorageEngine = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // Set the file name on the file in the uploads folder
-    cb(null, Date.now() + '-' + file.originalname);
+    cb(null, new Date().toISOString() + file.originalname);
   },
 });
 
+const checkFileType = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(new Error('Invalid file type'), false);
+  }
+};
+
 // Setup multer
-const uploads = multer({ storage: fileStorageEngine }); // { destination: "uploads/"}
+const upload = multer({
+  storage: fileStorageEngine,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: checkFileType,
+}); // { destination: "uploads/"}
 
 // Setup the upload route
-app.post('/single', uploads.single('image'), (req, res) => {
+app.post('/single', upload.single('image'), (req, res) => {
   console.log('file details:', req.file);
   res.send('file uploaded success');
-
-  // if (req.file) {
-  //   // Get YAML or throw exception on error
-  //   try {
-  //     // Load the YAML
-  //     const raw = fs.readFileSync(`uploads/${req.file.filename}`);
-  //     const data = YAML.safeLoad(raw);
-  //     // Show the YAML
-  //     console.log(req.files);
-  //     // Delete the file after we're done using it
-  //     fs.unlinkSync(`uploads/${req.file.filename}`);
-  //   } catch (ex) {
-  //     // Show error
-  //     console.log(ex);
-  //     // Send response
-  //     res.status(500).send({
-  //       ok: false,
-  //       error: 'Something went wrong on the server',
-  //     });
-  //   }
-  //   // Send response
-  //   res.status(200).send({
-  //     ok: true,
-  //     error: 'File uploaded',
-  //   });
-  // } else {
-  //   // Send response
-  //   res.status(400).send({
-  //     ok: false,
-  //     error: 'Please upload a file',
-  //   });
-  // }
 });
 
-app.post('/multiple', uploads.array('images', 3), (req, res) => {
+app.post('/multiple', upload.array('images', 3), (req, res) => {
   console.log('file details:', req.files);
   res.send('multiple files uploaded success');
 });
