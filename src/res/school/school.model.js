@@ -15,7 +15,7 @@ const schoolSchema = new mongoose.Schema(
     courses: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        // required: true,
+        required: false,
         ref: 'course',
       },
     ],

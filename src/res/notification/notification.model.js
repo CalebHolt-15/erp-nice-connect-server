@@ -8,7 +8,7 @@ const notificatonSchema = new mongoose.Schema(
     user: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
-      //   required: true,
+        required: true,
     },
   },
   { timestamps: true }
