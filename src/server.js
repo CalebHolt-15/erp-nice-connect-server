@@ -5,6 +5,7 @@ import https from 'https';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import multer from 'multer';
 import { connect } from './utils/db';
 import userRouter from './res/user/user.router';
 import itemRouter from './res/item/item.router';
@@ -87,6 +88,66 @@ app.use('/api/course', courseRouter);
 app.use('/api/task', taskRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/submission', submissionRouter);
+
+//File Upload
+// Setup Storage
+const fileStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Set the destination where the files should be stored on disk
+    cb(null, './src/images');
+  },
+  filename: (req, file, cb) => {
+    // Set the file name on the file in the uploads folder
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+// Setup multer
+const uploads = multer({ storage: fileStorageEngine }); // { destination: "uploads/"}
+
+// Setup the upload route
+app.post('/single', uploads.single('image'), (req, res) => {
+  console.log('file details:', req.file);
+  res.send('file uploaded success');
+
+  // if (req.file) {
+  //   // Get YAML or throw exception on error
+  //   try {
+  //     // Load the YAML
+  //     const raw = fs.readFileSync(`uploads/${req.file.filename}`);
+  //     const data = YAML.safeLoad(raw);
+  //     // Show the YAML
+  //     console.log(req.files);
+  //     // Delete the file after we're done using it
+  //     fs.unlinkSync(`uploads/${req.file.filename}`);
+  //   } catch (ex) {
+  //     // Show error
+  //     console.log(ex);
+  //     // Send response
+  //     res.status(500).send({
+  //       ok: false,
+  //       error: 'Something went wrong on the server',
+  //     });
+  //   }
+  //   // Send response
+  //   res.status(200).send({
+  //     ok: true,
+  //     error: 'File uploaded',
+  //   });
+  // } else {
+  //   // Send response
+  //   res.status(400).send({
+  //     ok: false,
+  //     error: 'Please upload a file',
+  //   });
+  // }
+});
+
+app.post('/multiple', uploads.array('images', 3), (req, res) => {
+  console.log('file details:', req.files);
+  res.send('multiple files uploaded success');
+});
+//
 
 export const start = async () => {
   try {
