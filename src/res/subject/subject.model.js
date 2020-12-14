@@ -5,7 +5,11 @@ const subjectSchema = new mongoose.Schema(
   {
     name: String,
     totalMarks: String,
-    notifications: String,
+    notifications: [{
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'notification',
+    }],
   },
   { timestamps: true }
 );
