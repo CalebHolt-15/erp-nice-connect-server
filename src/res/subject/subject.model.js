@@ -10,6 +10,11 @@ const subjectSchema = new mongoose.Schema(
       required: true,
       ref: 'notification',
     }],
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'course'
+    }
   },
   { timestamps: true }
 );
