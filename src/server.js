@@ -120,15 +120,20 @@ const upload = multer({
 // Setup the upload route
 app.post('/single', upload.single('image'), (req, res) => {
   console.log('file details:', req.file);
-  res.send('file uploaded success');
+  console.log('file uploaded success');
+});
+
+app.post('/question', upload.single('image'), (req, res) => {
+  console.log('question details:', req.file);
+  console.log('question uploaded success');
 });
 
 app.post('/multiple', upload.array('images', 3), (req, res) => {
   console.log('file details:', req.files);
-  res.send('multiple files uploaded success');
+  console.log('multiple files uploaded success');
 });
 //
-
+[];
 export const start = async () => {
   try {
     await connect();

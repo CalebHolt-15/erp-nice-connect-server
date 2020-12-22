@@ -8,16 +8,15 @@ const taskSchema = new mongoose.Schema(
     marks: String,
     start: String,
     due: String,
-    questions: String,
-    //   [
-    //   {
-    //     head: String,
-    //     body: String,
-    //     images: [String],
-    //     options: [String],
-    //     correctOption: String,
-    //   },
-    // ],
+    questions: [
+      {
+        head: String,
+        body: String,
+        images: [String],
+        options: [String],
+        correctOption: [String],
+      },
+    ],
     comments: String,
     //   [
     //   {
