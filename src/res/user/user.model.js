@@ -13,14 +13,14 @@ const userSchema = new mongoose.Schema(
     role: String,
     firstName: String,
     lastName: String,
-    subjects: [{
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'subject',
-    }],
+    subjects: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'subject',
+      },
+    ],
     courses: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: 'course',
     },
   },
