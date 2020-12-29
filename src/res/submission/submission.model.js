@@ -6,8 +6,10 @@ const submissionSchema = new mongoose.Schema(
     date: String,
     files: [String],
     answers: [String],
-    task: {
-      type: mongoose.SchemaTypes.ObjectId,
+    task:  {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'task',
     },
     user: {
       type: mongoose.SchemaTypes.ObjectId,
