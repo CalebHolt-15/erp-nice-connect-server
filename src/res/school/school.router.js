@@ -3,7 +3,7 @@ import controllers from './school.controllers';
 
 const router = Router();
 
-router.route('/').get(controllers.getPage).post(controllers.createOne);
+router.route('/').get(controllers.getPage).post(controllers.createOne).get(controllers.getAll);
 
 router
   .route('/:id')
