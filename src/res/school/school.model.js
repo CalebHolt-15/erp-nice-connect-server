@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { mongo } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const schoolSchema = new mongoose.Schema(
@@ -12,11 +13,16 @@ const schoolSchema = new mongoose.Schema(
       state: String,
       pincode: String,
     },
+    board: String,
     courses: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        required: false,
-        ref: 'course',
+        name: String,
+        subjects: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'subject',
+          },
+        ],
       },
     ],
     createdBy: {
