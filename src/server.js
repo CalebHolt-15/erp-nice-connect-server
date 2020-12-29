@@ -126,11 +126,14 @@ app.post('/single', upload.single('image'), (req, res) => {
 app.post('/question', upload.single('image'), (req, res) => {
   console.log('question details:', req.file);
   console.log('question uploaded success');
+  res.send(req.file.filename);
 });
 
 app.post('/multiple', upload.array('images', 3), (req, res) => {
   console.log('file details:', req.files);
   console.log('multiple files uploaded success');
+  let files = req.files.map((file) => file.filename);
+  res.send(files);
 });
 //
 [];

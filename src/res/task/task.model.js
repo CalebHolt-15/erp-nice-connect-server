@@ -4,19 +4,12 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const taskSchema = new mongoose.Schema(
   {
     title: String,
+    description: String,
     type: String,
     marks: String,
     start: String,
     due: String,
-    questions: [
-      {
-        head: String,
-        body: String,
-        images: [String],
-        options: [String],
-        correctOption: [String],
-      },
-    ],
+    user: String,
     comments: String,
     //   [
     //   {
@@ -25,7 +18,6 @@ const taskSchema = new mongoose.Schema(
     //     text: String,
     //   },
     // ],
-    subject: String,
     // {
     //   type: mongoose.SchemaTypes.ObjectId,
     //   // required: true,
@@ -42,6 +34,19 @@ const taskSchema = new mongoose.Schema(
     //   type: mongoose.SchemaTypes.ObjectId,
     //   // required: true,
     // },
+
+    school: String,
+    course: String,
+    subject: String,
+    questions: [
+      {
+        head: String,
+        body: String,
+        images: [String],
+        options: [String],
+        correctOption: [String],
+      },
+    ],
   },
   { timestamps: true }
 );
