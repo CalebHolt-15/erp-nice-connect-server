@@ -8,7 +8,22 @@ const notificatonSchema = new mongoose.Schema(
     user: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
-        required: true,
+      required: true,
+    },
+    school: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'school',
+    },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'course',
+    },
+    subject: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'subject',
     },
   },
   { timestamps: true }
