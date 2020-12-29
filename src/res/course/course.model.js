@@ -4,7 +4,6 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const courseSchema = new mongoose.Schema(
   {
     name: String,
-    section: String,
     subjects: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -12,11 +11,6 @@ const courseSchema = new mongoose.Schema(
         ref: 'subject',
       },
     ],
-    school: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'school',
-    },
   },
   { timestamps: true }
 );
