@@ -47,7 +47,9 @@ const taskSchema = new mongoose.Schema(
         correctOption: [String],
       },
     ],
+    files: [{}],
   },
+
   { timestamps: true }
 );
 
