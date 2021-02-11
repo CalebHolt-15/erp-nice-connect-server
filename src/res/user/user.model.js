@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     password: String,
-    role: String,
+    role: { type: String, required: true },
     firstName: String,
     lastName: String,
     subjects: [
