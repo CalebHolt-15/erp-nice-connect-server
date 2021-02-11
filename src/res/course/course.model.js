@@ -7,7 +7,6 @@ const courseSchema = new mongoose.Schema(
     subjects: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: 'subject',
       },
     ],
