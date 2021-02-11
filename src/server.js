@@ -135,8 +135,11 @@ app.post('/multiple', upload.array('images', 3), (req, res) => {
   let files = req.files.map((file) => file.filename);
   res.send(files);
 });
+
+app.get('/openFile', (req, res) => {
+  res.sendFile(__dirname + '/images/2021-02-11T08:16:09.153Zrilangki.jpg');
+});
 //
-[];
 export const start = async () => {
   try {
     await connect();
