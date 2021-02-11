@@ -149,7 +149,6 @@ app.post('/question', upload.single('image'), (req, res) => {
 });
 
 //
-[];
 export const start = async () => {
   try {
     await connect();
