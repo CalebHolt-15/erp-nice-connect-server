@@ -19,6 +19,7 @@ import courseRouter from './res/course/course.router';
 import taskRouter from './res/task/task.router';
 import notificationRouter from './res/notification/notification.router';
 import submissionRouter from './res/submission/submission.router';
+import uuidv4 from 'uuid/v4';
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
 var privateKey = fs.readFileSync(`${__dirname}/sslcert/server.key`, 'utf8');
@@ -89,7 +90,7 @@ app.use('/api/task', taskRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/submission', submissionRouter);
 
-//File Upload
+//****************** File Upload ******************************//////
 // Setup Storage
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -98,7 +99,7 @@ const fileStorageEngine = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // Set the file name on the file in the uploads folder
-    cb(null, new Date().toISOString() + file.originalname);
+    cb(null, uuidv4() + new Date().toISOString() + file.originalname);
   },
 });
 
@@ -115,9 +116,27 @@ const upload = multer({
   storage: fileStorageEngine,
   limits: { fileSize: 1024 * 1024 * 5 },
   fileFilter: checkFileType,
+  withPreview: true,
 }); // { destination: "uploads/"}
 
 // Setup the upload route
+
+app.post('/multiple', upload.array('images', 3), (req, res) => {
+  console.log('file details:', req.files);
+  let files = req.files.map((file) => file.filename);
+  let filepath = req.files.map((file) => file.path);
+  console.log('filepath:', filepath);
+  res.send(filepath);
+});
+
+app.get('/openFile', (req, res) => {
+  res.sendFile(
+    __dirname +
+      '/images/9fcb221c-406d-42de-a3a7-4fd7cd9e2c142021-02-11T10:50:23.167Zbahduh.jpg'
+  );
+  console.log('__dirname:', __dirname);
+});
+
 app.post('/single', upload.single('image'), (req, res) => {
   console.log('file details:', req.file);
   console.log('file uploaded success');
@@ -129,12 +148,6 @@ app.post('/question', upload.single('image'), (req, res) => {
   res.send(req.file.filename);
 });
 
-app.post('/multiple', upload.array('images', 3), (req, res) => {
-  console.log('file details:', req.files);
-  console.log('multiple files uploaded success');
-  let files = req.files.map((file) => file.filename);
-  res.send(files);
-});
 //
 [];
 export const start = async () => {
