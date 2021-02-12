@@ -20,6 +20,8 @@ import taskRouter from './res/task/task.router';
 import notificationRouter from './res/notification/notification.router';
 import submissionRouter from './res/submission/submission.router';
 import uuidv4 from 'uuid/v4';
+import { Task } from './res/task/task.model';
+const imageToBase64 = require('image-to-base64');
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
 var privateKey = fs.readFileSync(`${__dirname}/sslcert/server.key`, 'utf8');
@@ -130,11 +132,23 @@ app.post('/multiple', upload.array('images', 3), (req, res) => {
 });
 
 app.get('/openFile', (req, res) => {
-  res.sendFile(
-    __dirname +
-      '/images/8d001c5b-86b4-4b2d-9d6b-767f2cd7e0692021-02-12T10:43:25.992Zbahduh.jpg'
-  );
-  console.log('__dirname:', __dirname);
+  Task.findOne({ _id: '60267dc4d886efa5f5b13332' }, function (err, task) {
+    if (err) {
+      console.error(err);
+    } else {
+      imageToBase64(
+        __dirname +
+          '/images/7e026cc2-94b9-4cee-930f-3659e1da05ff2021-02-12T13:08:17.974ZIMG_20210124_223630.jpg'
+      ) // Path to the image
+        .then((response) => {
+          console.log(response);
+          res.send(response); // "cGF0aC90by9maWxlLmpwZw=="
+        })
+        .catch((error) => {
+          console.log(error); // Logs an error if there was one
+        });
+    }
+  }).exec();
 });
 
 app.post('/single', upload.single('image'), (req, res) => {
@@ -148,7 +162,6 @@ app.post('/question', upload.single('image'), (req, res) => {
   res.send(req.file.filename);
 });
 
-//
 export const start = async () => {
   try {
     await connect();
