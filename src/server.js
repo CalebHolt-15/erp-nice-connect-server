@@ -123,7 +123,7 @@ const upload = multer({
 
 app.post('/multiple', upload.array('images', 3), (req, res) => {
   console.log('file details:', req.files);
-  let files = req.files.map((file) => file.filename);
+  // let files = req.files.map((file) => file.filename);
   let filepath = req.files.map((file) => file.path);
   console.log('filepath:', filepath);
   res.send(filepath);
@@ -132,7 +132,7 @@ app.post('/multiple', upload.array('images', 3), (req, res) => {
 app.get('/openFile', (req, res) => {
   res.sendFile(
     __dirname +
-      '/images/9fcb221c-406d-42de-a3a7-4fd7cd9e2c142021-02-11T10:50:23.167Zbahduh.jpg'
+      '/images/8d001c5b-86b4-4b2d-9d6b-767f2cd7e0692021-02-12T10:43:25.992Zbahduh.jpg'
   );
   console.log('__dirname:', __dirname);
 });
