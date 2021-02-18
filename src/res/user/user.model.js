@@ -13,16 +13,6 @@ const userSchema = new mongoose.Schema(
     role: { type: String, required: true },
     firstName: String,
     lastName: String,
-    subjects: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'subject',
-      },
-    ],
-    courses: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'course',
-    },
   },
   { timestamps: true }
 );
