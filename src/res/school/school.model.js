@@ -6,25 +6,15 @@ const schoolSchema = new mongoose.Schema(
   {
     name: String,
     address: {
-      line1: String,
-      line2: String,
+      line: String,
       landmark: String,
       city: String,
       state: String,
       pincode: String,
     },
     board: String,
-    courses: [
-      {
-        name: String,
-        subjects: [
-          {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'subject',
-          },
-        ],
-      },
-    ],
+    phNo: String,
+    password: String,
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
