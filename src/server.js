@@ -131,17 +131,17 @@ app.post('/multiple', upload.array('images', 3), (req, res) => {
   res.send(filepath);
 });
 
-app.get('/openFile', (req, res) => {
-  Task.findOne({ _id: '6025362a5ec5d4737c0d4b5f' }, function (err, task) {
+app.get('/openFile/:id', (req, res) => {
+  Task.findOne(req.params.id, function (err, task) {
     if (err) {
       console.error(err);
     } else {
+      console.log('task: ', task);
       imageToBase64(
         __dirname +
           '/images/88e70ec5-b196-42af-9ba2-e5662520aee62021-02-11T13:50:32.730Zrilangki.jpg'
       ) // Path to the image
         .then((response) => {
-          console.log(response);
           res.send(response); // "cGF0aC90by9maWxlLmpwZw=="
         })
         .catch((error) => {
@@ -149,6 +149,7 @@ app.get('/openFile', (req, res) => {
         });
     }
   }).exec();
+  console.log('dirname: ', __dirname);
 });
 
 app.post('/single', upload.single('image'), (req, res) => {
