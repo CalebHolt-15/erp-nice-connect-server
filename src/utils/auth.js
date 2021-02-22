@@ -17,8 +17,8 @@ export const verifyAccessToken = (token) =>
   });
 
 export const signup = async (req, res) => {
-  if (!req.body.email || !req.body.password) {
-    return res.status(400).json({ message: 'need email and password' });
+  if (!req.body.phNo || !req.body.password) {
+    return res.status(400).json({ message: 'need phone-number and password' });
   }
 
   try {
@@ -43,15 +43,15 @@ export const signup = async (req, res) => {
 };
 
 export const signin = async (req, res) => {
-  if (!req.body.email || !req.body.password) {
-    return res.status(400).json({ message: 'need email and password' });
+  if (!req.body.phNo || !req.body.password) {
+    return res.status(400).json({ message: 'need phone-number and password' });
   }
 
-  const invalid = { message: 'Invalid email and passoword combination' };
+  const invalid = { message: 'Invalid phone-number and passoword combination' };
 
   try {
-    const user = await User.findOne({ email: req.body.email })
-      .select('email password')
+    const user = await User.findOne({ phNo: req.body.phNo })
+      .select('phNo password')
       .exec();
 
     if (!user) {

@@ -137,6 +137,7 @@ app.get('/openFile', (req, res) => {
     if (err) {
       console.error(err);
     } else {
+      console.log('task: ', task);
       imageToBase64(
         __dirname +
           '/images/4a53625c-8c2d-4c22-b54b-55e9a73d48362021-02-18T09:53:13.950Zv15msr.jpeg'
@@ -151,6 +152,7 @@ app.get('/openFile', (req, res) => {
         });
     }
   }).exec();
+  console.log('dirname: ', __dirname);
 });
 
 app.post('/single', upload.single('image'), (req, res) => {
