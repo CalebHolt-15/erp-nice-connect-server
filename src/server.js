@@ -21,6 +21,7 @@ import notificationRouter from './res/notification/notification.router';
 import submissionRouter from './res/submission/submission.router';
 import uuidv4 from 'uuid/v4';
 import { Task } from './res/task/task.model';
+import studentRouter from './res/student/student.router';
 const imageToBase64 = require('image-to-base64');
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
@@ -91,6 +92,7 @@ app.use('/api/course', courseRouter);
 app.use('/api/task', taskRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/submission', submissionRouter);
+app.use('/api/student', studentRouter);
 
 //****************** File Upload ******************************//////
 // Setup Storage
