@@ -2,17 +2,9 @@ import mongoose from 'mongoose';
 import { mongo } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-const schoolSchema = new mongoose.Schema(
+const teacherSchema = new mongoose.Schema(
   {
     name: String,
-    address: {
-      line: String,
-      landmark: String,
-      city: String,
-      state: String,
-      pincode: String,
-    },
-    board: String,
     phNo: {
       type: String,
       unique: true,
@@ -27,6 +19,6 @@ const schoolSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-schoolSchema.plugin(mongoosePaginate);
+teacherSchema.plugin(mongoosePaginate);
 
-export const School = mongoose.model('school', schoolSchema);
+export const Teacher = mongoose.model('teacher', teacherSchema);

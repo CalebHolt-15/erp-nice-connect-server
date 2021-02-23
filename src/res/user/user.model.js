@@ -3,9 +3,9 @@ import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
   {
-    phNo: { type: String, required: true, unique: true},
-    role: { type: String, required: true },
+    phNo: { type: String, required: true, unique: true, index: true },
     password: { type: String, required: true },
+    role: { type: String, required: true },
   },
   { timestamps: true }
 );

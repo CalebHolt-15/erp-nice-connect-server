@@ -3,9 +3,13 @@ import jwt from 'jsonwebtoken';
 import { User } from '../res/user/user.model';
 
 export const newAccessToken = (user) => {
-  return jwt.sign({ id: user._id }, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: process.env.JWT_ACCESS_EXP * 60 * 1000,
-  });
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_ACCESS_SECRET,
+    {
+      expiresIn: process.env.JWT_ACCESS_EXP * 60 * 1000,
+    }
+  );
 };
 
 export const verifyAccessToken = (token) =>
@@ -23,6 +27,7 @@ export const signup = async (req, res) => {
 
   try {
     const user = await User.create(req.body);
+    console.log('user signup data is:', user);
     const accessToken = newAccessToken(user);
     res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
       maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
@@ -50,9 +55,13 @@ export const signin = async (req, res) => {
   const invalid = { message: 'Invalid phone-number and passoword combination' };
 
   try {
-    const user = await User.findOne({ phNo: req.body.phNo })
-      .select('phNo password')
+    const user = await User.findOne({
+      phNo: req.body.phNo,
+    })
+
+      .select('phNo password role')
       .exec();
+    console.log('user signin data is:', user);
 
     if (!user) {
       return res.status(401).json(invalid);
@@ -76,7 +85,7 @@ export const signin = async (req, res) => {
       secure: true,
       sameSite: 'strict',
     });
-    res.status(200).end();
+    res.status(200).send(user);
   } catch (e) {
     console.error(e);
     res.status(500).end();
