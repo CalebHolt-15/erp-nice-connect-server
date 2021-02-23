@@ -23,6 +23,7 @@ import teacherRouter from './res/teacher/teacher.router';
 import uuidv4 from 'uuid/v4';
 import { Task } from './res/task/task.model';
 import { match } from 'assert';
+import studentRouter from './res/student/student.router';
 const imageToBase64 = require('image-to-base64');
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
@@ -94,6 +95,7 @@ app.use('/api/task', taskRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/submission', submissionRouter);
 app.use('/api/teacher', teacherRouter);
+app.use('/api/student', studentRouter);
 
 //****************** File Upload ******************************//////
 // Setup Storage
