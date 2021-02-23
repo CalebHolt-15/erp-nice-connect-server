@@ -151,6 +151,8 @@ export const createSchool = (model) => async (req, res) => {
 };
 
 export const createTeacher = (model) => async (req, res) => {
+  const createdBy = req.user._id;
+
   try {
     const doc = await model.create({ ...req.body, createdBy });
     (teacher.name = doc.name),
