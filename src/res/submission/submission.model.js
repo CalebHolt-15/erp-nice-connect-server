@@ -3,17 +3,19 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 const submissionSchema = new mongoose.Schema(
   {
-    date: String,
-    files: [String],
     answers: [String],
-    task:  {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'task',
-    },
-    user: {
-      type: mongoose.SchemaTypes.ObjectId,
-    },
+    task: String,
+    // {
+    // type: mongoose.Schema.Types.ObjectId,
+    // required: true,
+    // ref: 'task',
+    // },
+    user: String,
+    // {
+    //   type: mongoose.SchemaTypes.ObjectId,
+    // },
+    date: String,
+    files: [{}],
   },
   { timestamps: true }
 );
