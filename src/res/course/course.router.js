@@ -4,6 +4,7 @@ import controllers from './course.controllers';
 const router = Router();
 
 router.route('/').get(controllers.getPage).post(controllers.createOne);
+router.route('/coursedata').get(controllers.getAll);
 
 router
   .route('/:id')
