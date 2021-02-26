@@ -14,4 +14,5 @@ router
   .delete(controllers.removeOne)
   .put(controllers.updateOne);
 
+router.route('/phNo').get(controllers.getOne);
 export default router;
