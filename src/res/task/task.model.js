@@ -3,14 +3,14 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 const taskSchema = new mongoose.Schema(
   {
+    user: String,
     title: String,
     description: String,
     type: String,
     marks: String,
     start: String,
     due: String,
-    user: String,
-    comments: String,
+    // comments: String,
     //   [
     //   {
     //     user_id: String,
@@ -48,6 +48,7 @@ const taskSchema = new mongoose.Schema(
       },
     ],
     files: [{}],
+    key: { type: String, required: true },
   },
 
   { timestamps: true }
