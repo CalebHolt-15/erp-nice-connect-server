@@ -55,7 +55,7 @@ export const getPage = (model) => async (req, res) => {
   const { limit, offset } = getPagination(page, perpage);
 
   try {
-    const docs = await model.paginate({}, { offset });
+    const docs = await model.paginate({}, { offset, limit });
 
     res.status(200).json(docs);
   } catch (e) {
