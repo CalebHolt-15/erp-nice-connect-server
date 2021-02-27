@@ -6,7 +6,7 @@ router
   .route('/')
   .get(controllers.getPage)
   .post(controllers.createTeacher)
-  .get(controllers.getAll);
+  .get(controllers.getOneTeacher);
 
 router
   .route('/:id')
@@ -14,5 +14,4 @@ router
   .delete(controllers.removeOne)
   .put(controllers.updateOne);
 
-router.route('/phNo').get(controllers.getOne);
 export default router;
