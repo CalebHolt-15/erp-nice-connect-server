@@ -6,7 +6,7 @@ router
   .route('/')
   .get(controllers.getPage)
   .post(controllers.createStudent)
-  .get(controllers.getAll);
+  .get(controllers.getOneStudent);
 
 router
   .route('/:id')
