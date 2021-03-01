@@ -6,6 +6,11 @@ const userSchema = new mongoose.Schema(
     phNo: { type: String, required: true, unique: true, index: true },
     password: { type: String, required: true },
     role: { type: String, required: true },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'user',
+    },
   },
   { timestamps: true }
 );

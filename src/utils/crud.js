@@ -3,11 +3,13 @@ const admin = {
   phNo: '',
   password: '',
   role: 'admin',
+  createdBy: '',
 };
 const student = {
   phNo: '',
   password: '',
   role: 'student',
+  createdBy: '',
 };
 
 const teacher = {
@@ -15,11 +17,16 @@ const teacher = {
   phNo: '',
   password: '',
   role: 'teacher',
+  createdBy: '',
 };
 
 export const getOne = (model) => async (req, res) => {
+  const createdBy = req.user._id;
   try {
-    const doc = await model.findOne({ _id: req.params.id }).lean().exec();
+    const doc = await model
+      .findOne({ _id: req.params.id, createdBy })
+      .lean()
+      .exec();
 
     if (!doc) {
       return res.status(400).end();
@@ -124,6 +131,7 @@ export const createSchool = (model) => async (req, res) => {
     const doc = await model.create({ ...req.body, createdBy });
     (admin.phNo = doc.phNo),
       (admin.password = doc.password),
+      (admin.createdBy = doc.createdBy),
       res.status(201).json(doc);
   } catch (e) {
     console.error(e);
@@ -158,6 +166,7 @@ export const createTeacher = (model) => async (req, res) => {
     (teacher.name = doc.name),
       (teacher.phNo = doc.phNo),
       (teacher.password = doc.password),
+      (teacher.createdBy = doc.createdBy),
       res.status(201).json(doc);
   } catch (e) {
     console.error(e);
@@ -192,6 +201,7 @@ export const createStudent = (model) => async (req, res) => {
     const doc = await model.create({ ...req.body, createdBy });
     (student.phNo = doc.phNo),
       (student.password = doc.password),
+      (student.createdBy = doc.createdBy),
       res.status(201).json(doc);
   } catch (e) {
     console.error(e);
