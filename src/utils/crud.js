@@ -57,17 +57,21 @@ const getPagination = (page, size) => {
   return { limit, offset };
 };
 
-export const getPage = (model) => async (req, res) => {
+export const getPage = (model) => async (req, res, next) => {
   const { page, perpage } = req.query;
   const { limit, offset } = getPagination(page, perpage);
 
-  try {
-    const docs = await model.paginate({}, { offset, limit });
+  if (req.query.phNo) {
+    next();
+  } else {
+    try {
+      const docs = await model.paginate({}, { offset, limit });
 
-    res.status(200).json(docs);
-  } catch (e) {
-    console.error(e);
-    res.status(400).end();
+      res.status(200).json(docs);
+    } catch (e) {
+      console.error(e);
+      res.status(400).end();
+    }
   }
 };
 
@@ -228,6 +232,74 @@ export const createStudent = (model) => async (req, res) => {
   }
 };
 
+export const getOneStudent = (model) => async (req, res) => {
+  try {
+    const doc = await model.findOne({ phNo: req.query.phNo }).lean().exec();
+
+    if (!doc) {
+      return res.status(400).end();
+    }
+
+    res.status(200).json(doc);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
+export const getOneTeacher = (model) => async (req, res) => {
+  console.log('this is req: ', req.query.phNo);
+  try {
+    const doc = await model.findOne({ phNo: req.query.phNo }).lean().exec();
+
+    if (!doc) {
+      return res.status(400).end();
+    }
+
+    res.status(200).json(doc);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
+export const getAssignmentPage = (model) => async (req, res, next) => {
+  const { page, perpage } = req.query;
+  const { limit, offset } = getPagination(page, perpage);
+  if (req.query.createdBy) {
+    next();
+  } else {
+    try {
+      const docs = await model.paginate(
+        { course: req.query.course, schoolId: req.query.schoolId },
+        { offset, limit }
+      );
+
+      res.status(200).json(docs);
+    } catch (e) {
+      console.error(e);
+      res.status(400).end();
+    }
+  }
+};
+
+export const getTeacherAssignmentPage = (model) => async (req, res) => {
+  const { page, perpage } = req.query;
+  const { limit, offset } = getPagination(page, perpage);
+  console.log('TeacherId is : ', req.query.createdBy);
+  try {
+    const docs = await model.paginate(
+      { createdBy: req.query.createdBy },
+      { offset, limit }
+    );
+
+    res.status(200).json(docs);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
 export const crudControllers = (model) => ({
   removeOne: removeOne(model),
   getAll: getAll(model),
@@ -238,4 +310,8 @@ export const crudControllers = (model) => ({
   createSchool: createSchool(model),
   createTeacher: createTeacher(model),
   createStudent: createStudent(model),
+  getOneStudent: getOneStudent(model),
+  getOneTeacher: getOneTeacher(model),
+  getAssignmentPage: getAssignmentPage(model),
+  getTeacherAssignmentPage: getTeacherAssignmentPage(model),
 });

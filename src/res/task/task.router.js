@@ -3,7 +3,11 @@ import controllers from './task.controller';
 
 const router = Router();
 
-router.route('/').get(controllers.getPage).post(controllers.createOne);
+router
+  .route('/')
+  .get(controllers.getAssignmentPage)
+  .get(controllers.getTeacherAssignmentPage)
+  .post(controllers.createOne);
 
 router
   .route('/:id')

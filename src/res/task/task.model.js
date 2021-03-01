@@ -48,7 +48,12 @@ const taskSchema = new mongoose.Schema(
       },
     ],
     files: [{}],
-    key: { type: String, required: true },
+    schoolId: { type: String, required: true },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'user',
+    },
   },
 
   { timestamps: true }
