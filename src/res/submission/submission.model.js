@@ -4,7 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const submissionSchema = new mongoose.Schema(
   {
     answers: [String],
-    task: String,
+    title: [String],
     // {
     // type: mongoose.Schema.Types.ObjectId,
     // required: true,
@@ -16,6 +16,14 @@ const submissionSchema = new mongoose.Schema(
     // },
     date: String,
     files: [{}],
+    schoolId: { type: String, required: true },
+    teacherId: String,
+    course: String,
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'user',
+    },
   },
   { timestamps: true }
 );
