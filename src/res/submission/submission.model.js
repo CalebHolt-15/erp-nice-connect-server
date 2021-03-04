@@ -5,7 +5,7 @@ const submissionSchema = new mongoose.Schema(
   {
     title: String,
     answers: [String],
-    task: String,
+    title: [String],
     // {
     // type: mongoose.Schema.Types.ObjectId,
     // required: true,
@@ -16,15 +16,14 @@ const submissionSchema = new mongoose.Schema(
     //   type: mongoose.SchemaTypes.ObjectId,
     // },
     files: [{}],
-    course: String,
     subject: String,
-    schoolId: {
-      type: String,
-      // required: true
-    },
+
+    schoolId: { type: String, required: true },
+    teacherId: String,
+    course: String,
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      // required: true,
+      required: true,
       ref: 'user',
     },
     date: String,

@@ -7,7 +7,8 @@ router
   .route('/')
   .get(controllers.getAssignmentPage)
   .get(controllers.getTeacherAssignmentPage)
-  .post(controllers.createOne);
+  .post(controllers.createOne)
+  .get(controllers.getAssignmentData);
 
 router
   .route('/:id')
