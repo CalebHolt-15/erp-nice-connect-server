@@ -136,16 +136,15 @@ app.post('/multiple', upload.array('images', 3), (req, res) => {
   res.send(filepath);
 });
 
-app.get('/openFile', (req, res) => {
-  Task.findOne({ _id: req.params }, function (err, task) {
+app.get('/openFile/:id', (req, res) => {
+  Task.findOne({ _id: req.params.id }, function (err, task) {
     if (err) {
       console.error(err);
     } else {
       console.log('task: ', task);
-      imageToBase64(
-        __dirname +
-          '/images/4a53625c-8c2d-4c22-b54b-55e9a73d48362021-02-18T09:53:13.950Zv15msr.jpeg'
-      ) // Path to the image  __dirname + '/images/'
+      let reqPath = path.join(__dirname, '../');
+      console.log('reqPath: ', reqPath);
+      imageToBase64(reqPath + task.files[0]) // Path to the image  __dirname + '/images/'
         .then((response) => {
           // console.log(response);
 
@@ -156,7 +155,6 @@ app.get('/openFile', (req, res) => {
         });
     }
   }).exec();
-  console.log('dirname: ', __dirname);
 });
 
 app.post('/single', upload.single('image'), (req, res) => {
