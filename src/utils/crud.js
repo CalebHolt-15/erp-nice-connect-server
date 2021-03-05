@@ -51,12 +51,12 @@ const getPagination = (page, size) => {
 };
 
 export const getPage = (model) => async (req, res, next) => {
-  const { page, perpage } = req.query;
-  const { limit, offset } = getPagination(page, perpage);
-
   if (req.query.phNo) {
     next();
   } else {
+    const { page, perpage } = req.query;
+    const { limit, offset } = getPagination(page, perpage);
+
     try {
       const docs = await model.paginate({}, { offset, limit });
 
