@@ -24,6 +24,7 @@ import uuidv4 from 'uuid/v4';
 import { Task } from './res/task/task.model';
 import { match } from 'assert';
 import studentRouter from './res/student/student.router';
+import { Submission } from './res/submission/submission.model';
 const imageToBase64 = require('image-to-base64');
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
@@ -137,7 +138,30 @@ app.post('/multiple', upload.array('images', 3), (req, res) => {
 });
 
 app.get('/openFile/:id', (req, res) => {
+  console.log(req.params);
   Task.findOne({ _id: req.params.id }, function (err, task) {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('task: ', task);
+      let reqPath = path.join(__dirname, '../');
+      console.log('reqPath: ', reqPath);
+      imageToBase64(reqPath + task.files[0]) // Path to the image  __dirname + '/images/'
+        .then((response) => {
+          // console.log(response);
+
+          res.send(response); // "cGF0aC90by9maWxlLmpwZw=="ic
+        })
+        .catch((error) => {
+          console.log(error); // Logs an error if there was one
+        });
+    }
+  }).exec();
+});
+
+app.get('/openFileSubmission/:id', (req, res) => {
+  console.log(req.params);
+  Submission.findOne({ _id: req.params.id }, function (err, task) {
     if (err) {
       console.error(err);
     } else {
