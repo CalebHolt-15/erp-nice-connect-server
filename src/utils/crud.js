@@ -20,6 +20,10 @@ const teacher = {
   createdBy: '',
 };
 
+const questionForm = {
+  question: [],
+};
+
 export const getOne = (model) => async (req, res) => {
   const createdBy = req.user._id;
   try {
@@ -77,8 +81,25 @@ export const getPage = (model) => async (req, res, next) => {
 
 export const createOne = (model) => async (req, res) => {
   const createdBy = req.user._id;
+  console.log(req.body);
   try {
-    const doc = await model.create({ ...req.body, createdBy });
+    const doc = await model.create({ ...req.body });
+    console.log('doc', doc);
+    res.status(201).json(doc);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
+export const createQuiz = (model) => async (req, res) => {
+  const createdBy = req.user._id;
+  console.log('createdBy', createdBy);
+
+  try {
+    const doc = await model.create(...req.body, createdBy);
+    console.log('doc', doc);
+    //console.log('model:', model);
     res.status(201).json(doc);
   } catch (e) {
     console.error(e);
@@ -374,6 +395,7 @@ export const crudControllers = (model) => ({
   getOne: getOne(model),
   getPage: getPage(model),
   createOne: createOne(model),
+  createQuiz: createQuiz(model),
   updateOne: updateOne(model),
   createSchool: createSchool(model),
   createTeacher: createTeacher(model),

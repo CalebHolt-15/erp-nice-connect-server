@@ -5,7 +5,7 @@ const router = Router();
 router
   .route('/')
   .get(controllers.getPage)
-  .post(controllers.createOne)
+  .post(controllers.createQuiz)
   .get(controllers.getAll);
 
 router
