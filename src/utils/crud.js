@@ -81,10 +81,8 @@ export const getPage = (model) => async (req, res, next) => {
 
 export const createOne = (model) => async (req, res) => {
   const createdBy = req.user._id;
-  console.log(req.body);
   try {
-    const doc = await model.create({ ...req.body });
-    console.log('doc', doc);
+    const doc = await model.create({ ...req.body, createdBy });
     res.status(201).json(doc);
   } catch (e) {
     console.error(e);
@@ -93,13 +91,10 @@ export const createOne = (model) => async (req, res) => {
 };
 
 export const createQuiz = (model) => async (req, res) => {
-  const createdBy = req.user._id;
-  console.log('createdBy', createdBy);
-
+  // const createdBy = req.user._id;
+  console.log('reqBody is : ', req.body);
   try {
-    const doc = await model.create(...req.body, createdBy);
-    console.log('doc', doc);
-    //console.log('model:', model);
+    const doc = await model.create({ questions: req.body });
     res.status(201).json(doc);
   } catch (e) {
     console.error(e);
