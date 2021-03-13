@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const quizSchema = new mongoose.Schema({
-  questions: [{ question: String }],
+  questions: [{ questionText: String }],
 });
 
 quizSchema.plugin(mongoosePaginate);
