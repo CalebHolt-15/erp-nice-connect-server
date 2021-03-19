@@ -1,14 +1,21 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-const quizSchema = new mongoose.Schema({
-  questions: [
-    {
-      questionText: String,
-      answerOptions: [{ answerText: String, isCorrect: Boolean }],
-    },
-  ],
-});
+const quizSchema = new mongoose.Schema(
+  {
+    course: String,
+    schoolId: String,
+    teacherId: String,
+    questions: [
+      {
+        questionText: String,
+        answerOptions: [{ answerText: String, isCorrect: Boolean }],
+        // noOfCorrectAns: Number,
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 quizSchema.plugin(mongoosePaginate);
 

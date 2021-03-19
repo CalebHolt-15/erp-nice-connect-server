@@ -91,10 +91,19 @@ export const createOne = (model) => async (req, res) => {
 };
 
 export const createQuiz = (model) => async (req, res) => {
-  // const createdBy = req.user._id;
-  console.log('reqBody is : ', req.body);
+  console.log('reqQuizBody is : ', req.body);
+  const course = req.body.cours;
+  const schoolId = req.body.schoolId;
+  const teacherId = req.body.teacherId;
+  const questions = req.body.questions;
+
+  // console.log('cours is : ', course);
+  // console.log('schoolId is : ', schoolId);
+  // console.log('questions is : ', questions);
+
   try {
-    const doc = await model.create({ questions: req.body });
+    const doc = await model.create({ course, schoolId, teacherId, questions });
+
     res.status(201).json(doc);
   } catch (e) {
     console.error(e);
@@ -266,7 +275,7 @@ export const getOneTeacher = (model) => async (req, res) => {
   console.log('this is req: ', req.query.phNo);
   try {
     const doc = await model.findOne({ phNo: req.query.phNo }).lean().exec();
-
+    console.log('get one teacher route');
     if (!doc) {
       return res.status(400).end();
     }
