@@ -92,17 +92,24 @@ export const createOne = (model) => async (req, res) => {
 
 export const createQuiz = (model) => async (req, res) => {
   console.log('reqQuizBody is : ', req.body);
-  const course = req.body.cours;
+  const course = req.body.course;
   const schoolId = req.body.schoolId;
   const teacherId = req.body.teacherId;
   const questions = req.body.questions;
+  const subject = req.body.subject;
 
   // console.log('cours is : ', course);
   // console.log('schoolId is : ', schoolId);
   // console.log('questions is : ', questions);
 
   try {
-    const doc = await model.create({ course, schoolId, teacherId, questions });
+    const doc = await model.create({
+      course,
+      subject,
+      schoolId,
+      teacherId,
+      questions,
+    });
 
     res.status(201).json(doc);
   } catch (e) {
@@ -393,6 +400,19 @@ export const getStudentSubmissions = (model) => async (req, res) => {
     res.status(400).end();
   }
 };
+
+export const getAllSubjects = (model) => async (req, res) => {
+  console.log(req.query);
+  try {
+    const docs = await model.find({ course: req.query.course }).lean().exec();
+
+    res.status(200).json(docs);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
 export const crudControllers = (model) => ({
   removeOne: removeOne(model),
   getAll: getAll(model),
@@ -411,4 +431,5 @@ export const crudControllers = (model) => ({
   getAssignmentData: getAssignmentData(model),
   getStudentSubmissions: getStudentSubmissions(model),
   getMySubmissions: getMySubmissions(model),
+  getAllSubjects: getAllSubjects(model),
 });
