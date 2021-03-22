@@ -93,10 +93,10 @@ export const createOne = (model) => async (req, res) => {
 export const createQuiz = (model) => async (req, res) => {
   console.log('reqQuizBody is : ', req.body);
   const course = req.body.course;
+  const subject = req.body.subject;
   const schoolId = req.body.schoolId;
   const teacherId = req.body.teacherId;
   const questions = req.body.questions;
-  const subject = req.body.subject;
 
   // console.log('cours is : ', course);
   // console.log('schoolId is : ', schoolId);
