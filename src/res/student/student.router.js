@@ -4,9 +4,9 @@ const router = Router();
 
 router
   .route('/')
+  .get(controllers.getOneStudent)
   .get(controllers.getPage)
-  .post(controllers.createStudent)
-  .get(controllers.getOneStudent);
+  .post(controllers.createStudent);
 
 router
   .route('/:id')
