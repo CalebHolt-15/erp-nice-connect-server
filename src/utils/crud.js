@@ -402,11 +402,33 @@ export const getStudentSubmissions = (model) => async (req, res) => {
 };
 
 export const getAllSubjects = (model) => async (req, res) => {
-  console.log(req.query);
+  console.log('reqQuery is :', req.query);
   try {
     const docs = await model.find({ course: req.query.course }).lean().exec();
 
     res.status(200).json(docs);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
+export const getOneQuiz = (model) => async (req, res) => {
+  try {
+    const doc = await model
+      .findOne({
+        course: req.query.course,
+        subject: req.query.subject,
+        schoolId: req.query.createdBy,
+      })
+      .lean()
+      .exec();
+
+    if (!doc) {
+      return res.status(400).end();
+    }
+
+    res.status(200).json(doc);
   } catch (e) {
     console.error(e);
     res.status(400).end();
@@ -432,4 +454,5 @@ export const crudControllers = (model) => ({
   getStudentSubmissions: getStudentSubmissions(model),
   getMySubmissions: getMySubmissions(model),
   getAllSubjects: getAllSubjects(model),
+  getOneQuiz: getOneQuiz(model),
 });
