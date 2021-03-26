@@ -8,6 +8,10 @@ router
   .post(controllers.createQuiz)
   .get(controllers.getAll);
 
+router.route('/quizteacherside').get(controllers.getQuizTeacherSide);
+
+router.route('/quizstudentside').get(controllers.getQuizStudentSide);
+
 router
   .route('/:id')
   .get(controllers.getOne)
