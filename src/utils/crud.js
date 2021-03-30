@@ -44,6 +44,7 @@ export const getOne = (model) => async (req, res) => {
 };
 
 export const getAll = (model) => async (req, res) => {
+  console.log('getAll');
   try {
     const docs = await model.find().lean().exec();
 
@@ -62,6 +63,7 @@ const getPagination = (page, size) => {
 };
 
 export const getPage = (model) => async (req, res, next) => {
+  console.log('getPage');
   if (req.query.phNo) {
     next();
   } else {
@@ -97,11 +99,6 @@ export const createQuiz = (model) => async (req, res) => {
   const schoolId = req.body.schoolId;
   const teacherId = req.body.teacherId;
   const questions = req.body.questions;
-
-  // console.log('cours is : ', course);
-  // console.log('schoolId is : ', schoolId);
-  // console.log('questions is : ', questions);
-
   try {
     const doc = await model.create({
       course,
@@ -112,6 +109,46 @@ export const createQuiz = (model) => async (req, res) => {
     });
 
     res.status(201).json(doc);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
+export const getQuizTeacherSide = (model) => async (req, res, next) => {
+  console.log('getQuizTeacherSide');
+
+  try {
+    const docs = await model
+      .find({
+        teacherId: req.query.teacherId,
+        schoolId: req.query.schoolId,
+      })
+      .lean()
+      .exec();
+
+    res.status(200).json(docs);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
+export const getQuizStudentSide = (model) => async (req, res, next) => {
+  console.log('getQuizData');
+  console.log('req.query', req.query);
+
+  try {
+    const docs = await model
+      .find({
+        schoolId: req.query.schoolId,
+        course: req.query.course,
+        subject: req.query.subject,
+      })
+      .lean()
+      .exec();
+
+    res.status(200).json(docs);
   } catch (e) {
     console.error(e);
     res.status(400).end();
@@ -294,7 +331,28 @@ export const getOneTeacher = (model) => async (req, res) => {
   }
 };
 
+export const getTeachers = (model) => async (req, res) => {
+  console.log('req.query: ', req.query);
+  try {
+    const doc = await model
+      .findOne({ createdBy: req.query.schoolId })
+      .lean()
+      .exec();
+    // console.log('  req.query.schoolId ', req.query.schoolId);
+    // console.log('  getTeachers ');
+    // if (!doc) {
+    //   return res.status(400).end();
+    // }
+
+    res.status(200).json(doc);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
 export const getAssignmentPage = (model) => async (req, res, next) => {
+  console.log('getAssignmentPage');
   const { page, perpage } = req.query;
   const { limit, offset } = getPagination(page, perpage);
   if (req.query.createdBy || req.query.dataOnly) {
@@ -455,4 +513,7 @@ export const crudControllers = (model) => ({
   getMySubmissions: getMySubmissions(model),
   getAllSubjects: getAllSubjects(model),
   getOneQuiz: getOneQuiz(model),
+  getQuizTeacherSide: getQuizTeacherSide(model),
+  getQuizStudentSide: getQuizStudentSide(model),
+  getTeachers: getTeachers(model),
 });

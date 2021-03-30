@@ -9,6 +9,10 @@ router
   // .get(controllers.getAll)
   .get(controllers.getOneQuiz);
 
+router.route('/quizteacherside').get(controllers.getQuizTeacherSide);
+
+router.route('/quizstudentside').get(controllers.getQuizStudentSide);
+
 router
   .route('/:id')
   .get(controllers.getOne)

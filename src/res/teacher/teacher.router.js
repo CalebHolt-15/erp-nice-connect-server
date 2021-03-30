@@ -8,6 +8,8 @@ router
   .post(controllers.createTeacher)
   .get(controllers.getOneTeacher);
 
+router.route('/teachersofoneschool').get(controllers.getTeachers);
+
 router
   .route('/:id')
   .get(controllers.getOne)
