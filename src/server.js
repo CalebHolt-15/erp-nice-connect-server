@@ -26,6 +26,7 @@ import { match } from 'assert';
 import studentRouter from './res/student/student.router';
 import { Submission } from './res/submission/submission.model';
 import quizRouter from './res/quiz/quiz.router';
+import quizresultsRouter from './res/quizresults/quizresults.router';
 
 const imageToBase64 = require('image-to-base64');
 
@@ -100,6 +101,8 @@ app.use('/api/submission', submissionRouter);
 app.use('/api/teacher', teacherRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/quiz', quizRouter);
+app.use('/api/quizsubmission', quizresultsRouter);
+app.use('/api/quizresults', quizresultsRouter);
 
 //****************** File Upload ******************************//////
 // Setup Storage

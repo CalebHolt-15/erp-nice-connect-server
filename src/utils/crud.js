@@ -119,7 +119,7 @@ export const getQuizTeacherSide = (model) => async (req, res, next) => {
   console.log('getQuizTeacherSide');
 
   try {
-    const docs = await model
+    const data = await model
       .find({
         teacherId: req.query.teacherId,
         schoolId: req.query.schoolId,
@@ -127,7 +127,7 @@ export const getQuizTeacherSide = (model) => async (req, res, next) => {
       .lean()
       .exec();
 
-    res.status(200).json(docs);
+    res.status(200).json(data);
   } catch (e) {
     console.error(e);
     res.status(400).end();
@@ -135,8 +135,8 @@ export const getQuizTeacherSide = (model) => async (req, res, next) => {
 };
 
 export const getQuizStudentSide = (model) => async (req, res, next) => {
-  console.log('getQuizData');
-  console.log('req.query', req.query);
+  // console.log('getQuizData');
+  // console.log('req.query', req.query);
 
   try {
     const docs = await model
@@ -149,6 +149,31 @@ export const getQuizStudentSide = (model) => async (req, res, next) => {
       .exec();
 
     res.status(200).json(docs);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+export const createQuizSumbission = (model) => async (req, res) => {
+  console.log('req.body///: ', req.body);
+
+  try {
+    console.log('createQuizSumbission');
+    const doc = await model.create({
+      studentName: req.body.studentName,
+      course: req.body.currentStudentCourse,
+      subject: req.body.subject,
+      scored: req.body.score,
+      schoolId: req.body.schoolId,
+      teacherId: req.body.teacherId,
+
+      questions: req.body.questions,
+      selectedOptions: req.body.selectedOptions,
+
+      // teacherId: req.body.teacherId,mu
+    });
+
+    res.status(201).json(doc);
   } catch (e) {
     console.error(e);
     res.status(400).end();
@@ -493,4 +518,6 @@ export const crudControllers = (model) => ({
   getQuizTeacherSide: getQuizTeacherSide(model),
   getQuizStudentSide: getQuizStudentSide(model),
   getTeachers: getTeachers(model),
+  createQuizSumbission: createQuizSumbission(model),
+  // getQuizResults: getQuizResults(model),
 });
