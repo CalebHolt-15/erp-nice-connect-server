@@ -16,6 +16,7 @@ router
   .route('/:id')
   .get(controllers.getOne)
   .delete(controllers.removeOne)
-  .put(controllers.updateOne);
+  .put(controllers.addStudentIdToQuiz);
+// .put(controllers.updateOne);
 
 export default router;

@@ -93,12 +93,17 @@ export const createOne = (model) => async (req, res) => {
 };
 
 export const createQuiz = (model) => async (req, res) => {
-  console.log('reqQuizBody is : ', req.body);
+  console.log('createQuiz ');
+  console.log('reqQuizBody.quiComplted is : ', req.body.quizCompleted);
+
   const course = req.body.course;
   const subject = req.body.subject;
   const schoolId = req.body.schoolId;
   const teacherId = req.body.teacherId;
   const questions = req.body.questions;
+  // const quizCompleted = req.body.quizCompleted;
+  const quizCompletedStudents = req.body.quizCompletedStudents;
+
   try {
     const doc = await model.create({
       course,
@@ -106,6 +111,8 @@ export const createQuiz = (model) => async (req, res) => {
       schoolId,
       teacherId,
       questions,
+      // quizCompleted,
+      quizCompletedStudents,
     });
 
     res.status(201).json(doc);
@@ -135,8 +142,7 @@ export const getQuizTeacherSide = (model) => async (req, res, next) => {
 };
 
 export const getQuizStudentSide = (model) => async (req, res, next) => {
-  // console.log('getQuizData');
-  // console.log('req.query', req.query);
+  console.log('getQuizStudentSide');
 
   try {
     const docs = await model
@@ -155,6 +161,7 @@ export const getQuizStudentSide = (model) => async (req, res, next) => {
   }
 };
 export const createQuizSumbission = (model) => async (req, res) => {
+  console.log('createQuizSumbission ');
   console.log('req.body///: ', req.body);
 
   try {
@@ -166,14 +173,42 @@ export const createQuizSumbission = (model) => async (req, res) => {
       scored: req.body.score,
       schoolId: req.body.schoolId,
       teacherId: req.body.teacherId,
-
       questions: req.body.questions,
       selectedOptions: req.body.selectedOptions,
-
-      // teacherId: req.body.teacherId,mu
     });
 
     res.status(201).json(doc);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+export const addStudentIdToQuiz = (model) => async (req, res) => {
+  console.log('updateQuiz');
+  // console.log('updateQuiz-req.body', req.body);
+  console.log('updateQuiz-req.....', req.body.quizCompletedStudents);
+
+  try {
+    const updatedDoc = await model
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        {
+          $push: {
+            quizCompletedStudents: req.body.quizCompletedStudents,
+          },
+        },
+        { new: true }
+      )
+      .lean()
+      .exec();
+
+    if (!updatedDoc) {
+      return res.status(400).end();
+    }
+
+    res.status(200).json(updatedDoc);
   } catch (e) {
     console.error(e);
     res.status(400).end();
@@ -198,6 +233,7 @@ export const removeOne = (model) => async (req, res) => {
 };
 
 export const updateOne = (model) => async (req, res) => {
+  console.log('updateOne');
   try {
     const updatedDoc = await model
       .findOneAndUpdate(
@@ -520,4 +556,5 @@ export const crudControllers = (model) => ({
   getTeachers: getTeachers(model),
   createQuizSumbission: createQuizSumbission(model),
   // getQuizResults: getQuizResults(model),
+  addStudentIdToQuiz: addStudentIdToQuiz(model),
 });

@@ -14,6 +14,8 @@ const quizSchema = new mongoose.Schema(
         // noOfCorrectAns: Number,
       },
     ],
+
+    quizCompletedStudents: [String],
   },
   { timestamps: true }
 );
