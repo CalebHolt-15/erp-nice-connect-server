@@ -4,9 +4,10 @@ const router = Router();
 
 router
   .route('/')
-  .get(controllers.getPage)
+  // .get(controllers.getPage)
   .post(controllers.createQuiz)
-  .get(controllers.getAll);
+  // .get(controllers.getAll)
+  .get(controllers.getOneQuiz);
 
 router.route('/quizteacherside').get(controllers.getQuizTeacherSide);
 

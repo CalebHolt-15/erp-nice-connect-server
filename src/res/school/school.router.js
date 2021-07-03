@@ -2,6 +2,8 @@ import { Router } from 'express';
 import controllers from './school.controllers';
 const router = Router();
 
+router.route('/schooldata').get(controllers.getAll);
+
 router
   .route('/')
   .get(controllers.getPage)

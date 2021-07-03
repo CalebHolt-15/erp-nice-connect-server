@@ -2,11 +2,12 @@ import { Router } from 'express';
 import controllers from './student.controllers';
 const router = Router();
 
+router.route('/studentdata').get(controllers.getAll);
 router
   .route('/')
+  .get(controllers.getOneStudent)
   .get(controllers.getPage)
-  .post(controllers.createStudent)
-  .get(controllers.getOneStudent);
+  .post(controllers.createStudent);
 
 router
   .route('/:id')
