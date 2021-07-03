@@ -20,7 +20,7 @@ import taskRouter from './res/task/task.router';
 import notificationRouter from './res/notification/notification.router';
 import submissionRouter from './res/submission/submission.router';
 import teacherRouter from './res/teacher/teacher.router';
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import { Task } from './res/task/task.model';
 import { match } from 'assert';
 import studentRouter from './res/student/student.router';
@@ -30,8 +30,8 @@ import quizresultsRouter from './res/quizresults/quizresults.router';
 
 const imageToBase64 = require('image-to-base64');
 
-var certificate = fs.readFileSync(`${__dirname}/sslcert/server.crt`, 'utf8');
-var privateKey = fs.readFileSync(`${__dirname}/sslcert/server.key`, 'utf8');
+var certificate = fs.readFileSync(`${__dirname}/sslcert/127.0.0.1.pem`, 'utf8');
+var privateKey = fs.readFileSync(`${__dirname}/sslcert/127.0.0.1-key.pem`, 'utf8');
 
 const xsrfProtection = csrf({
   cookie: true,
@@ -108,12 +108,13 @@ app.use('/api/quizresults', quizresultsRouter);
 // Setup Storage
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log("here");
     // Set the destination where the files should be stored on disk
     cb(null, './src/images');
   },
   filename: (req, file, cb) => {
     // Set the file name on the file in the uploads folder
-    cb(null, uuidv4() + new Date().toISOString() + file.originalname);
+    cb(null, uuidv4() + new Date().toISOString().replace(/:/g, '-') + file.originalname);
   },
 });
 
