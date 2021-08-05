@@ -121,3 +121,4 @@ dist
 
 src/sslcert
 images
+*.pem

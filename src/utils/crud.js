@@ -25,10 +25,11 @@ const questionForm = {
 };
 
 export const getOne = (model) => async (req, res) => {
-  const createdBy = req.user._id;
+  console.log("getOne");
+  // const createdBy = req.user._id;
   try {
     const doc = await model
-      .findOne({ _id: req.params.id, createdBy })
+      .findOne({ _id: req.params.id })
       .lean()
       .exec();
 
@@ -82,9 +83,10 @@ export const getPage = (model) => async (req, res, next) => {
 };
 
 export const createOne = (model) => async (req, res) => {
-  const createdBy = req.user._id;
+  console.log("createOne:");
+  // const createdBy = req.user._id;
   try {
-    const doc = await model.create({ ...req.body, createdBy });
+    const doc = await model.create({ ...req.body });
     res.status(201).json(doc);
   } catch (e) {
     console.error(e);
@@ -258,13 +260,15 @@ export const updateOne = (model) => async (req, res) => {
 };
 
 export const createSchool = (model) => async (req, res) => {
-  const createdBy = req.user._id;
+  console.log("createSchool")
+  // const createdBy = req.user._id;
 
   try {
-    const doc = await model.create({ ...req.body, createdBy });
+    // const doc = await model.create({ ...req.body, createdBy });
+    const doc = await model.create({ ...req.body });
     (admin.phNo = doc.phNo),
       (admin.password = doc.password),
-      (admin.createdBy = doc.createdBy),
+      // (admin.createdBy = doc.createdBy),
       res.status(201).json(doc);
   } catch (e) {
     console.error(e);

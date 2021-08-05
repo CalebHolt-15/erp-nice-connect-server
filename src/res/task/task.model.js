@@ -29,13 +29,13 @@ const taskSchema = new mongoose.Schema(
     //     //   required: true,
     //   },
     // ],
-    user: String,
+    studentName: String,
     // {
     //   type: mongoose.SchemaTypes.ObjectId,
     //   // required: true,
     // },
 
-    school: String,
+    // school: String,
     course: String,
     subject: String,
     questions: [

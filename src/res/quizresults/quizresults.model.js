@@ -17,7 +17,6 @@ const quizResultsSchema = new mongoose.Schema(
       },
     ],
     selectedOptions: [String],
-    // teacherId: String,
   },
   { timestamps: true }
 );

@@ -7,7 +7,7 @@
     "node": true
   },
   "extends": [
-    "standard",
+    "standard", 
     "prettier",
     "prettier/standard",
     "plugin:jest/recommended"

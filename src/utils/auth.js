@@ -21,13 +21,17 @@ export const verifyAccessToken = (token) =>
   });
 
 export const signup = async (req, res) => {
-  if (!req.body.phNo || !req.body.password) {
+  console.log("signup");
+  console.log("req.body:", req.body);
+  console.log("req.body.ability:", req.body.ability);
+
+  if (!req.body.email || !req.body.password) {
     return res.status(400).json({ message: 'need phone-number and password' });
   }
 
   try {
     const user = await User.create(req.body);
-    console.log('user signup data is:', user);
+    console.log('user signup:', user);
     const accessToken = newAccessToken(user);
     res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
       maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
@@ -48,20 +52,28 @@ export const signup = async (req, res) => {
 };
 
 export const signin = async (req, res) => {
-  if (!req.body.phNo || !req.body.password) {
-    return res.status(400).json({ message: 'need phone-number and password' });
+  console.log('req.body:', req.body)
+  console.log(req.body.email);
+  console.log(req.body.password);
+  // console.log(req.body.phNo);
+
+
+  // if (!req.body.email) {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).json({ message: 'need username and password' });
   }
+  console.log("signin");
 
-  const invalid = { message: 'Invalid phone-number and passoword combination' };
-
+  const invalid = { message: 'Invalid username and passoword combination' };
   try {
     const user = await User.findOne({
-      phNo: req.body.phNo,
+      email: req.body.email,
+      // email: req.body.email,
     })
-
-      .select('phNo password role')
+    // .select('email')
+      .select('email password username role ability')
       .exec();
-    console.log('user signin data is:', user);
+    console.log('user signin:', user);
 
     if (!user) {
       return res.status(401).json(invalid);
@@ -74,6 +86,7 @@ export const signin = async (req, res) => {
     }
 
     const accessToken = newAccessToken(user);
+    console.log("accessToken:", accessToken);
     res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
       maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
       secure: true,
@@ -98,6 +111,7 @@ export const protect = async (req, res, next) => {
   }
 
   const token = `${req.cookies['payload']}.${req.cookies['signature'][0]}`;
+  console.log("protect > token:", token);
 
   let payload;
   try {

@@ -61,13 +61,13 @@ app.use(
 );
 
 app.use(function (req, res, next) {
+  console.log("here")
   res.header('Content-Type', 'application/json;charset=UTF-8');
   res.header('Access-Control-Allow-Credentials', true);
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
+  ); next();
 });
 
 app.use(cookieParser());
@@ -103,6 +103,7 @@ app.use('/api/student', studentRouter);
 app.use('/api/quiz', quizRouter);
 app.use('/api/quizsubmission', quizresultsRouter);
 app.use('/api/quizresults', quizresultsRouter);
+// app.use('/api/superadmin');
 
 //****************** File Upload ******************************//////
 // Setup Storage
@@ -112,14 +113,25 @@ const fileStorageEngine = multer.diskStorage({
     // Set the destination where the files should be stored on disk
     cb(null, './src/images');
   },
-  filename: (req, file, cb) => {
+  filename: (req, file, cb) => {   
     // Set the file name on the file in the uploads folder
     cb(null, uuidv4() + new Date().toISOString().replace(/:/g, '-') + file.originalname);
   },
 });
+const fileStorageEngineVideos = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // console.log("videos", video);
+    // Set the destination where the files should be stored on disk
+    cb(null, './src/images');
+  },
+  filename: (req, file, cb) => {
+    // Set the file name on the file in the uploads folder
+    cb(null, file.originalname);
+  },
+});
 
 const checkFileType = (req, file, cb) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'video/mp4') {
     cb(null, true);
   } else {
     cb(new Error('Invalid file type'), false);
@@ -133,6 +145,13 @@ const upload = multer({
   fileFilter: checkFileType,
   withPreview: true,
 }); // { destination: "uploads/"}
+//video
+const uploadVideos = multer({
+  storage: fileStorageEngineVideos,
+  limits: { fileSize: 1024 * 1024 * 50 },
+  fileFilter: checkFileType,
+  withPreview: true,
+});
 
 // Setup the upload route
 
@@ -187,6 +206,13 @@ app.get('/openFileSubmission/:id', (req, res) => {
     }
   }).exec();
 });
+
+app.post('/videoupload', upload.single('videos'), (req, res) => {
+  //  let filepath = req.videos.map((file) => file.path);
+  console.log('video uploaded');
+  // res.send(filepath);
+});
+
 
 app.post('/single', upload.single('image'), (req, res) => {
   console.log('file details:', req.file);
