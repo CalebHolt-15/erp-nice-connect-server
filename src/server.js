@@ -1,4 +1,4 @@
-// OFFICE ERP 
+// OFFICE ERP //NICE
 import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
