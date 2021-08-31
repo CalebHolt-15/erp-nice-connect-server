@@ -24,14 +24,20 @@ const questionForm = {
   question: [],
 };
 
+//erp
+const employee = {
+  name: '',
+  email: '',
+  password: '',
+  role: 'employee',
+  // createdBy: '',
+};
+
 export const getOne = (model) => async (req, res) => {
-  console.log("getOne");
+  console.log('getOne');
   // const createdBy = req.user._id;
   try {
-    const doc = await model
-      .findOne({ _id: req.params.id })
-      .lean()
-      .exec();
+    const doc = await model.findOne({ _id: req.params.id }).lean().exec();
 
     if (!doc) {
       return res.status(400).end();
@@ -83,7 +89,7 @@ export const getPage = (model) => async (req, res, next) => {
 };
 
 export const createOne = (model) => async (req, res) => {
-  console.log("createOne:");
+  console.log('createOne:');
   // const createdBy = req.user._id;
   try {
     const doc = await model.create({ ...req.body });
@@ -260,7 +266,7 @@ export const updateOne = (model) => async (req, res) => {
 };
 
 export const createSchool = (model) => async (req, res) => {
-  console.log("createSchool")
+  console.log('createSchool');
   // const createdBy = req.user._id;
 
   try {
@@ -346,6 +352,46 @@ export const createStudent = (model) => async (req, res) => {
   }
   try {
     const user = await User.create(student);
+    const accessToken = newAccessToken(user);
+    res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
+      maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
+      secure: true,
+      sameSite: 'strict',
+    });
+    res.cookie('signature', accessToken.split('.').splice(2, 1), {
+      maxAge: process.env.SESSION_COOKIE_EXP * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
+    res.status(200).end();
+  } catch (e) {
+    console.error(e);
+    return res.status(400).end();
+  }
+};
+
+//erp-employee
+export const createEmployee = (model) => async (req, res) => {
+  // const createdBy = req.user._id;
+  console.log('create Employee:');
+
+  try {
+    const doc = await model.create({
+      ...req.body,
+      // createdBy
+    });
+    // console.log('createdBy: ', createdBy);
+    (employee.password = doc.password),
+      (employee.name = doc.name),
+      (employee.email = doc.email),
+      res.status(201).json(doc);
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+  try {
+    const user = await User.create(employee);
     const accessToken = newAccessToken(user);
     res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
       maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
@@ -584,4 +630,6 @@ export const crudControllers = (model) => ({
   createQuizSumbission: createQuizSumbission(model),
   // getQuizResults: getQuizResults(model),
   addStudentIdToQuiz: addStudentIdToQuiz(model),
+  //erp
+  createEmployee: createEmployee(model),
 });

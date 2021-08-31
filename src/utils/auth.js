@@ -21,9 +21,9 @@ export const verifyAccessToken = (token) =>
   });
 
 export const signup = async (req, res) => {
-  console.log("signup");
-  console.log("req.body:", req.body);
-  console.log("req.body.ability:", req.body.ability);
+  console.log('signup');
+  console.log('req.body:', req.body);
+  console.log('req.body.ability:', req.body.ability);
 
   if (!req.body.email || !req.body.password) {
     return res.status(400).json({ message: 'need phone-number and password' });
@@ -52,17 +52,16 @@ export const signup = async (req, res) => {
 };
 
 export const signin = async (req, res) => {
-  console.log('req.body:', req.body)
+  console.log('req.body:', req.body);
   console.log(req.body.email);
   console.log(req.body.password);
   // console.log(req.body.phNo);
-
 
   // if (!req.body.email) {
   if (!req.body.email || !req.body.password) {
     return res.status(400).json({ message: 'need username and password' });
   }
-  console.log("signin");
+  console.log('signin');
 
   const invalid = { message: 'Invalid username and passoword combination' };
   try {
@@ -70,7 +69,7 @@ export const signin = async (req, res) => {
       email: req.body.email,
       // email: req.body.email,
     })
-    // .select('email')
+      // .select('email')
       .select('email password username role ability')
       .exec();
     console.log('user signin:', user);
@@ -86,7 +85,7 @@ export const signin = async (req, res) => {
     }
 
     const accessToken = newAccessToken(user);
-    console.log("accessToken:", accessToken);
+    console.log('accessToken:', accessToken);
     res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
       maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
       secure: true,
@@ -111,7 +110,7 @@ export const protect = async (req, res, next) => {
   }
 
   const token = `${req.cookies['payload']}.${req.cookies['signature'][0]}`;
-  console.log("protect > token:", token);
+  console.log('protect > token:', token);
 
   let payload;
   try {
@@ -149,3 +148,35 @@ export const reAuth = async (req, res, next) => {
   });
   next();
 };
+
+//
+//   try {
+//     const user = await User.create(req.body);
+//     console.log('user signup:', user);
+//     const accessToken = newAccessToken(user);
+//     res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
+//       maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
+//       secure: true,
+//       sameSite: 'strict',
+//     });
+//     res.cookie('signature', accessToken.split('.').splice(2, 1), {
+//       maxAge: process.env.SESSION_COOKIE_EXP * 60 * 1000,
+//       httpOnly: true,
+//       secure: true,
+//       sameSite: 'strict',
+//     });
+//     res.status(200).end();
+//   } catch (e) {
+//     console.error(e);
+//     return res.status(400).end();
+//   }
+// };
+
+// //
+// export const createEmployee = async (req, res) => {
+//   console.log('createEmployee');
+//   console.log('req.body.name:', req.body.name);
+
+//   if (!req.body.name || !req.body.email) {
+//     return res.status(400).json({ message: 'need phone-number and password' });
+//   }

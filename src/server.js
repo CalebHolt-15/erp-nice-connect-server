@@ -10,7 +10,7 @@ import multer from 'multer';
 import { connect } from './utils/db';
 import userRouter from './res/user/user.router';
 import itemRouter from './res/item/item.router';
-import { protect, reAuth, signin, signup } from './utils/auth';
+import { protect, reAuth, signin, signup, createEmployee } from './utils/auth';
 import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
 import { logger } from './utils/logger';
@@ -28,11 +28,15 @@ import studentRouter from './res/student/student.router';
 import { Submission } from './res/submission/submission.model';
 import quizRouter from './res/quiz/quiz.router';
 import quizresultsRouter from './res/quizresults/quizresults.router';
+import employeeRouter from './res/erp_employee/employee.router';
 
 const imageToBase64 = require('image-to-base64');
 
 var certificate = fs.readFileSync(`${__dirname}/sslcert/127.0.0.1.pem`, 'utf8');
-var privateKey = fs.readFileSync(`${__dirname}/sslcert/127.0.0.1-key.pem`, 'utf8');
+var privateKey = fs.readFileSync(
+  `${__dirname}/sslcert/127.0.0.1-key.pem`,
+  'utf8'
+);
 
 const xsrfProtection = csrf({
   cookie: true,
@@ -62,13 +66,15 @@ app.use(
 );
 
 app.use(function (req, res, next) {
-  console.log("here")
+  console.log('.here');
   res.header('Content-Type', 'application/json;charset=UTF-8');
   res.header('Access-Control-Allow-Credentials', true);
   res.header(
     'Access-Control-Allow-Headers',
+    '*',
     'Origin, X-Requested-With, Content-Type, Accept'
-  ); next();
+  );
+  next();
 });
 
 app.use(cookieParser());
@@ -80,7 +86,7 @@ app.use(
 );
 
 app.use(morgan('dev'));
-// app.use(logger);
+app.use(logger);
 
 app.get('/', xsrfProtection, (req, res) => {
   res.cookie('XSRF-TOKEN', req.csrfToken());
@@ -89,6 +95,10 @@ app.get('/', xsrfProtection, (req, res) => {
 
 app.post('/signup', signup);
 app.post('/signin', signin);
+//erp
+// app.post('/employee', createEmployee);
+app.use('/employee', employeeRouter);
+
 app.use('/api', protect);
 app.use('/api', reAuth);
 app.use('/api/user', xsrfProtection, userRouter);
@@ -110,13 +120,16 @@ app.use('/api/quizresults', quizresultsRouter);
 // Setup Storage
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log("here");
+    console.log('here');
     // Set the destination where the files should be stored on disk
     cb(null, './src/images');
   },
-  filename: (req, file, cb) => {   
+  filename: (req, file, cb) => {
     // Set the file name on the file in the uploads folder
-    cb(null, uuidv4() + new Date().toISOString().replace(/:/g, '-') + file.originalname);
+    cb(
+      null,
+      uuidv4() + new Date().toISOString().replace(/:/g, '-') + file.originalname
+    );
   },
 });
 const fileStorageEngineVideos = multer.diskStorage({
@@ -132,7 +145,11 @@ const fileStorageEngineVideos = multer.diskStorage({
 });
 
 const checkFileType = (req, file, cb) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'video/mp4') {
+  if (
+    file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'video/mp4'
+  ) {
     cb(null, true);
   } else {
     cb(new Error('Invalid file type'), false);
@@ -207,13 +224,6 @@ app.get('/openFileSubmission/:id', (req, res) => {
     }
   }).exec();
 });
-
-app.post('/videoupload', upload.single('videos'), (req, res) => {
-  //  let filepath = req.videos.map((file) => file.path);
-  console.log('video uploaded');
-  // res.send(filepath);
-});
-
 
 app.post('/single', upload.single('image'), (req, res) => {
   console.log('file details:', req.file);
