@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/cli": "^7.0.0",
+    "@babel/cli": "^7.14.8",
     "bcryptjs": "2.4.3",
     "cookie-parser": "1.4.5",
     "cors": "^2.8.5",
@@ -27,8 +27,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "7.12.3",
-    "@babel/node": "^7.0.0",
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.14.9",
     "@babel/preset-env": "7.12.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-install": "2.1.0",
