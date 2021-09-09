@@ -49,6 +49,7 @@ const httpsServer = https.createServer(
   app
 );
 
+// 'x-xsrf-token' also,
 app.disable('x-powered-by');
 app.use(
   cors({
@@ -59,6 +60,7 @@ app.use(
       'Content-Type',
       'X-Requested-With',
       'Accept',
+      'Authorization',
       'x-xsrf-token',
     ],
     credentials: true,
@@ -66,12 +68,10 @@ app.use(
 );
 
 app.use(function (req, res, next) {
-  console.log('.here');
   res.header('Content-Type', 'application/json;charset=UTF-8');
   res.header('Access-Control-Allow-Credentials', true);
   res.header(
     'Access-Control-Allow-Headers',
-    '*',
     'Origin, X-Requested-With, Content-Type, Accept'
   );
   next();
@@ -97,7 +97,7 @@ app.post('/signup', signup);
 app.post('/signin', signin);
 //erp
 // app.post('/employee', createEmployee);
-app.use('/employee', employeeRouter);
+// app.use('/employee', employeeRouter);
 
 app.use('/api', protect);
 app.use('/api', reAuth);
@@ -115,6 +115,7 @@ app.use('/api/quiz', quizRouter);
 app.use('/api/quizsubmission', quizresultsRouter);
 app.use('/api/quizresults', quizresultsRouter);
 // app.use('/api/superadmin');
+app.use('/api/employee', employeeRouter);
 
 //****************** File Upload ******************************//////
 // Setup Storage

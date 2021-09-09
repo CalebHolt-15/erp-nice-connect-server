@@ -51,7 +51,7 @@ export const getOne = (model) => async (req, res) => {
 };
 
 export const getAll = (model) => async (req, res) => {
-  console.log('getAll');
+  console.log('getAll//');
   try {
     const docs = await model.find().lean().exec();
 
@@ -306,7 +306,7 @@ export const createTeacher = (model) => async (req, res) => {
 
   try {
     const doc = await model.create({ ...req.body, createdBy });
-    (teacher.name = doc.name),
+      (teacher.name = doc.name),
       (teacher.phNo = doc.phNo),
       (teacher.password = doc.password),
       (teacher.createdBy = doc.createdBy),
@@ -371,44 +371,46 @@ export const createStudent = (model) => async (req, res) => {
   }
 };
 
-//erp-employee
+//erp-employee // createdBy
 export const createEmployee = (model) => async (req, res) => {
   // const createdBy = req.user._id;
-  console.log('create Employee:');
+  console.log('create Employee_req:', req.body);
 
   try {
-    const doc = await model.create({
-      ...req.body,
-      // createdBy
-    });
-    // console.log('createdBy: ', createdBy);
-    (employee.password = doc.password),
+    const doc = await model.create(req.body);
+    console.log('doc:', doc);
       (employee.name = doc.name),
       (employee.email = doc.email),
+      (employee.password = doc.password),
       res.status(201).json(doc);
   } catch (e) {
     console.error(e);
     res.status(400).end();
   }
-  try {
-    const user = await User.create(employee);
-    const accessToken = newAccessToken(user);
-    res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
-      maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
-      secure: true,
-      sameSite: 'strict',
-    });
-    res.cookie('signature', accessToken.split('.').splice(2, 1), {
-      maxAge: process.env.SESSION_COOKIE_EXP * 60 * 1000,
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-    res.status(200).end();
-  } catch (e) {
-    console.error(e);
-    return res.status(400).end();
-  }
+  // try {
+  //   const user = await User.create(employee);
+  //   console.log('user_reqdtoCreateNewAccessToken:', user);
+
+  // const accessToken = newAccessToken(user)
+  // console.log('createEmployee.accessToken:', accessToken);
+
+  // res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
+  //   maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
+  //   secure: true,
+  //   sameSite: 'strict',
+  // });
+  // res.cookie('signature', accessToken.split('.').splice(2, 1), {
+  //   maxAge: process.env.SESSION_COOKIE_EXP * 60 * 1000,
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: 'strict',
+  // });
+  // res.status(200).end();
+  //   res.status(201).json(doc);
+  // } catch (e) {
+  //   console.error(e);
+  //   return res.status(400).end();
+  // }
 };
 
 export const getOneStudent = (model) => async (req, res) => {
