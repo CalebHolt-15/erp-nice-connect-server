@@ -240,8 +240,10 @@ export const removeOne = (model) => async (req, res) => {
   }
 };
 
+//findOne usingtheId from req.params thenreplace itby theNewdata from req.body
 export const updateOne = (model) => async (req, res) => {
-  console.log('updateOne');
+  console.log('updateOne-req.params:', req.params);
+  console.log('updateOne-req.body:', req.body);
   try {
     const updatedDoc = await model
       .findOneAndUpdate(
