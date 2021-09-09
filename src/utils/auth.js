@@ -2,22 +2,22 @@ import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 import { User } from '../res/user/user.model';
 
+//role also//crt newAccessToken based on userId&role
+// console.log('newAccessToken.user:', user)
 export const newAccessToken = (user) => {
-  return jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_ACCESS_SECRET,
-    {
-      expiresIn: process.env.JWT_ACCESS_EXP * 60 * 1000,
-    }
-  );
+  return (
+    jwt.sign({ id: user._id }, process.env.JWT_ACCESS_SECRET, {
+    expiresIn: process.env.JWT_ACCESS_EXP * 60 * 1000,
+  }))
 };
 
+//verify (token=payload.signature) using (JWT_ACCESS_SECRET)// reject or resolve
 export const verifyAccessToken = (token) =>
-  new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, payload) => {
-      if (err) return reject(err);
-      resolve(payload);
-    });
+new Promise((resolve, reject) => {
+  jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, payload) => {
+    if (err) return reject(err);
+    resolve(payload);
+  });
   });
 
 export const signup = async (req, res) => {
@@ -53,17 +53,17 @@ export const signup = async (req, res) => {
 
 export const signin = async (req, res) => {
   console.log('req.body:', req.body);
-  console.log(req.body.email);
-  console.log(req.body.password);
+  // console.log(req.body.email);
+  // console.log(req.body.password);
   // console.log(req.body.phNo);
-
   // if (!req.body.email) {
   if (!req.body.email || !req.body.password) {
     return res.status(400).json({ message: 'need username and password' });
   }
-  console.log('signin');
+  console.log('60.signin');
 
   const invalid = { message: 'Invalid username and passoword combination' };
+  //if email&password exist then findthe user
   try {
     const user = await User.findOne({
       email: req.body.email,
@@ -72,8 +72,9 @@ export const signin = async (req, res) => {
       // .select('email')
       .select('email password username role ability')
       .exec();
-    console.log('user signin:', user);
+    console.log('72.signin-user:', user);
 
+    //if he's not a user (401)//is user checkpassword
     if (!user) {
       return res.status(401).json(invalid);
     }
@@ -84,8 +85,9 @@ export const signin = async (req, res) => {
       return res.status(401).json(invalid);
     }
 
+    //if passwors match create newAccessToken using his id,role...
     const accessToken = newAccessToken(user);
-    console.log('accessToken:', accessToken);
+    console.log('87.signin-accessToken:', accessToken);
     res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
       maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
       secure: true,
@@ -104,37 +106,52 @@ export const signin = async (req, res) => {
   }
 };
 
+// '/api'
+//if payload&signature arethere,Verify
 export const protect = async (req, res, next) => {
+  console.log("protect//")
+  console.log('111.req.cookies:', req.cookies)
   if (!req.cookies['payload'] || !req.cookies['signature']) {
     return res.status(401).end();
   }
 
+  //if payload&signature are there in Cookies then[crt token=payload.signature]=>Verify
   const token = `${req.cookies['payload']}.${req.cookies['signature'][0]}`;
-  console.log('protect > token:', token);
+  console.log('protect-token:', token);
 
   let payload;
+  //after token created, verify it
   try {
-    payload = await verifyAccessToken(token);
+    payload = await verifyAccessToken(token); //token needed
   } catch (e) {
     return res.status(401).end();
   }
 
+  console.log('protect.user:', user)
   const user = await User.findById(payload.id)
     .select('-password')
     .lean()
     .exec();
 
+//if not a user
   if (!user) {
     return res.status(401).end();
   }
 
+//if user
   req.user = user;
   next();
 };
 
+//After protect
+//create newAccessToken
+//then response inthecookie with payload&signature => next()
 export const reAuth = async (req, res, next) => {
-  const accessToken = newAccessToken(req.user);
+  console.log('reAuth:');
+  console.log('reAuth-req.user:', req.user);
+  const accessToken = newAccessToken(req.user); //userID is needed
 
+  //after accessToken created
   res.cookie('payload', accessToken.split('.').splice(0, 2).join('.'), {
     maxAge: process.env.PERMANENT_COOKIE_EXP * 60 * 1000,
     secure: true,
