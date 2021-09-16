@@ -3,20 +3,24 @@ import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
   {
+    username: {
+      type: String,
+      // required: true,
+      // unique: true, index: true
+    },
     email: {
       type: String,
       // required: true,
       // unique: true,
       //  index: true
     },
-    password: {
+    role: {
       type: String,
       // required: true
     },
-    username: {
+    password: {
       type: String,
-      // required: true,
-      // unique: true, index: true
+      // required: true
     },
     fullName: {
       type: String,
@@ -28,13 +32,6 @@ const userSchema = new mongoose.Schema(
       // required: true,
       // unique: true, index: true
     },
-
-    // phNo: {
-    //   type: String,
-    //   // required: true,
-    //   // unique: true, index: true
-    // },
-
     ability: [
       {
         action: String,
@@ -47,17 +44,6 @@ const userSchema = new mongoose.Schema(
       // required: true,//COMMENT THIS FOR SUPERUSER SIGNUP
       ref: 'user',
     },
-    //
-    // fullName: 'John Doe',
-    //   username: 'johndoe',
-    //   password: 'admin',
-    //   avatar: require('@src/assets/images/portrait/small/avatar-s-11.jpg').default,
-    //   email: 'admin@demo.com',
-    //   role: 'admin',
-
-    // extras: {
-    //   eCommerceCartItemsCount: Number
-    // }
   },
   { timestamps: true }
 );
@@ -90,3 +76,19 @@ userSchema.methods.checkPassword = function (password) {
 };
 
 export const User = mongoose.model('user', userSchema);
+
+    // fullName: 'John Doe',
+    //   username: 'johndoe',
+    //   password: 'admin',
+    //   avatar: require('@src/assets/images/portrait/small/avatar-s-11.jpg').default,
+    //   email: 'admin@demo.com',
+    //   role: 'admin',
+
+    // extras: {
+    //   eCommerceCartItemsCount: Number
+    // }
+     // phNo: {
+    //   type: String,
+    //   // required: true,
+    //   // unique: true, index: true
+    // },
